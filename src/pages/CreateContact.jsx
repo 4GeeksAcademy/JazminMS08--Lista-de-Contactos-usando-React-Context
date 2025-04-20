@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useContacts } from "../context/ContactContext";
 
-export const CreateContact = () => {
+const CreateContact = () => {
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -92,3 +93,5 @@ export const CreateContact = () => {
     </div>
   );
 };
+
+export default CreateContact;
