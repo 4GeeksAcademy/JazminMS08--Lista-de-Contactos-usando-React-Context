@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://playground.4geeks.com/contact"; // URL base de la API
+const API_BASE_URL = "https://playground.4geeks.com/contact/agendas/jaz01";
 
 // Obtener todos los contactos
 export const getContacts = async () => {
@@ -29,19 +29,20 @@ export const editContact = async (id, updatedContact) => {
     return await response.json();
 };
 
+
 export const deleteContact = async (id) => {
-    console.log("Intentando eliminar el contacto con ID:", id);
-    const response = await fetch(`https://playground.4geeks.com/contact/agendas/jaz01/contacts/${id}`, {
-        method: "DELETE",
-    });
-
-    if (!response.ok) {
-        const result = await response.json();
-        console.error("Error en la eliminación:", result);
-        throw new Error(`Error al eliminar el contacto: ${result.detail ? result.detail[0].msg : "Error desconocido"}`);
+    try {
+      const response = await fetch(`https://playground.4geeks.com/contact/${id}`, {
+        method: "DELETE"
+      });
+      if (!response.ok) {
+        throw new Error("Error al eliminar contacto");
+      }
+    } catch (error) {
+      throw error;
     }
+  };
+  
 
-    console.log("Contacto eliminado correctamente");
-    return { message: "Contacto eliminado exitosamente" };
-};
+  
 

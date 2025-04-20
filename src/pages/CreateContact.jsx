@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createContact } from "../services/apiService";
+import { useContacts } from "../context/ContactContext";
 
 export const CreateContact = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +10,8 @@ export const CreateContact = () => {
     address: "",
     avatar: "",
   });
+
+  const { addContact } = useContacts(); // <- usando el contexto
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -20,8 +22,8 @@ export const CreateContact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await createContact(formData);
-      navigate("/"); // Redirigir a la página principal después de crear el contacto
+      await addContact(formData); // <- usando método del contexto
+      navigate("/"); // redirige después de crear
     } catch (error) {
       console.error("Error al crear el contacto:", error.message);
     }

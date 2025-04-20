@@ -1,7 +1,22 @@
 import { Link } from "react-router-dom";
+import { useContacts } from "../context/ContactContext"; // Asegúrate de que esta ruta esté bien
+
 function Card({ contacto }) {
+  const { removeContact } = useContacts();
+
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm("¿Estás seguro de eliminar este contacto?");
+    if (!confirmDelete) return;
+
+    try {
+      await removeContact(contacto.id); // Llama a la función del contexto
+    } catch (error) {
+      console.error("Error eliminando contacto:", error.message);
+    }
+  };
+
   return (
-    <div className="card shadow-sm w-75 mx-3">
+    <div className="card shadow-sm w-75 mx-3 my-2">
       <div className="row g-0 align-items-center">
         <div className="col-md-2 text-center">
           <img
@@ -34,7 +49,7 @@ function Card({ contacto }) {
               <i className="fas fa-edit"></i>
             </button>
           </Link>
-          <button className="btn btn-link text-danger">
+          <button className="btn btn-link text-danger" onClick={handleDelete}>
             <i className="fas fa-trash"></i>
           </button>
         </div>
