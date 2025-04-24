@@ -1,38 +1,53 @@
-const API_BASE_URL = "https://playground.4geeks.com/contact/agendas/jaz01";
+const API_CONTACTS_URL = "https://playground.4geeks.com/contact/agendas/juanpass/contacts";
 
 // Obtener todos los contactos
 export const getContacts = async () => {
-  const response = await fetch(`${API_BASE_URL}`);
-  if (!response.ok) throw new Error("Error al obtener los contactos");
-  return await response.json();
+    const response = await fetch(API_CONTACTS_URL);
+    if (!response.ok) throw new Error("Error al obtener los contactos");
+    return await response.json();
 };
 
-// Crear un nuevo contacto
+// Crear nuevo contacto
 export const createContact = async (contact) => {
-  const response = await fetch(`${API_BASE_URL}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(contact),
-  });
-  if (!response.ok) throw new Error("Error al crear el contacto");
-  return await response.json();
+    console.log("🟡 Enviando POST al backend:", contact);
+
+    const response = await fetch(API_CONTACTS_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(contact),
+    });
+
+    const responseText = await response.text();
+    console.log("🔵 Respuesta cruda del servidor:", responseText);
+
+    if (!response.ok) {
+        console.error("❌ Error del servidor:", response.status, responseText);
+        throw new Error(responseText || "Error al crear el contacto");
+    }
+
+    return JSON.parse(responseText);
 };
 
-// Editar un contacto existente
+// Editar un contacto
 export const editContact = async (id, updatedContact) => {
-  const response = await fetch(`${API_BASE_URL}/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(updatedContact),
-  });
-  if (!response.ok) throw new Error("Error al editar el contacto");
-  return await response.json();
+    const response = await fetch(`${API_CONTACTS_URL}/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedContact),
+    });
+
+    if (!response.ok) throw new Error("Error al editar el contacto");
+    return await response.json();
 };
 
-// Eliminar contacto
+// Eliminar un contacto
 export const deleteContact = async (id) => {
-  const response = await fetch(`https://playground.4geeks.com/contact/${id}`, {
-    method: "DELETE",
-  });
-  if (!response.ok) throw new Error("Error al eliminar contacto");
+    const response = await fetch(`${API_CONTACTS_URL}/${id}`, {
+        method: "DELETE",
+    });
+
+    if (!response.ok) throw new Error("Error al eliminar el contacto");
+    return await response.json();
 };
