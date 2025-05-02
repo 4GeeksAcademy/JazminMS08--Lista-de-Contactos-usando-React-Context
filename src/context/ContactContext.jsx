@@ -95,5 +95,6 @@ export const ContactProvider = ({ children }) => {
     >
       {children}
     </ContactContext.Provider>
+
   );
 };
